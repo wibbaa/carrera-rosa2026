@@ -1,0 +1,71 @@
+@import "tailwindcss";
+
+@theme {
+  /* Color tokens - race-kit palette. Not pastel-cancer-ribbon, not corporate blue. */
+  --color-ink: #16131b;
+  --color-ink-soft: #211c28;
+  --color-paper: #faf8f7;
+  --color-paper-dim: #f0ecec;
+  --color-rose: #e4007c;
+  --color-rose-deep: #9e0057;
+  --color-rose-glow: #ff4fa8;
+  --color-gold: #c9962f;
+  --color-mist: #ddd6d9;
+  --color-mist-dark: #37303e;
+  --color-ink-mute: #7d7484;
+
+  --font-display: "Anton", "Bebas Neue", sans-serif;
+  --font-body: "Inter", system-ui, sans-serif;
+  --font-mono: "Space Mono", ui-monospace, monospace;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-body);
+  background: var(--color-paper);
+  color: var(--color-ink);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+.font-display {
+  font-family: var(--font-display);
+  letter-spacing: 0.01em;
+}
+
+.font-mono {
+  font-family: var(--font-mono);
+}
+
+.bib-notch {
+  position: relative;
+}
+.bib-notch::before,
+.bib-notch::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: 18px;
+  height: 18px;
+  border-radius: 9999px;
+  background: var(--color-paper);
+  transform: translateY(-50%);
+}
+.bib-notch::before { left: -9px; }
+.bib-notch::after { right: -9px; }
+
+.bib-notch-dark::before,
+.bib-notch-dark::after {
+  background: var(--color-ink);
+}

@@ -1,0 +1,27 @@
+name: Limpiar comprobantes de pago
+
+# Corre solo todos los días a las 9:00 UTC (~2am/3am hora Nogales según horario)
+# y también se puede disparar a mano desde la pestaña Actions del repo.
+on:
+  schedule:
+    - cron: '0 9 * * *'
+  workflow_dispatch:
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Instalar dependencias
+        run: npm install @supabase/supabase-js
+
+      - name: Borrar comprobantes verificados hace 3+ días
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+        run: node scripts/cleanup-proofs.mjs
