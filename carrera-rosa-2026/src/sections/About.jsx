@@ -49,7 +49,7 @@ export default function About() {
                   className="w-full h-auto"
                 />
                 <p className="font-mono text-[10px] uppercase tracking-widest text-ink-mute text-center py-2">
-                  1ra Carrera Rosa · Equipo de coordinación
+                  1ra Carrera Rosa · Fundadores y muchos más que nos sumamos
                 </p>
               </div>
             </Reveal>
