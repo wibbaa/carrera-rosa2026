@@ -19,8 +19,10 @@ export const ORGANIZERS = {
     'Grupo de corredores que desde el 2024 organiza carreras para apoyar a instituciones de la comunidad.',
   timeline: [
     { year: '2024', label: '1ra Carrera Rosa' },
-    { year: '2025', label: 'Todos con Saúl (TEApoyo)' },
+    { year: '2025', label: 'Carrera Todos con Saúl (TEApoyo)' },
     { year: '2025', label: '2da Carrera Rosa' },
+    { year: '2026', label: 'Carrera Todos por Alejandrito'},
+    { year: '2026', label: 'Carrera Asilo de Ancianos Franciscano'},
     { year: '2026', label: '3ra Carrera Rosa', current: true },
   ],
   team: [
