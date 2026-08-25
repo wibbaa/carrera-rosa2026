@@ -184,8 +184,8 @@ export default function AdminDashboard({ userEmail, onLogout }) {
         )}
 
         <p className="font-mono text-[11px] text-ink-mute mt-4">
-          Los comprobantes de inscripciones verificadas se borran automáticamente ~3 días después
-          de marcarse como verificadas (script de limpieza aparte — no pasa desde este panel).
+          Los comprobantes de inscripciones se borrarán automáticamente ~3 días después
+          de marcarse como verificadas para ahorrar espacio.
         </p>
       </div>
     </div>
