@@ -13,7 +13,7 @@ export default function Routes() {
           </h2>
         </Reveal>
 
-        <RevealGroup className="grid md:grid-cols-3 gap-6" stagger={0.12}>
+        <RevealGroup className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6" stagger={0.12}>
           {MODALITIES.map((m) => (
             <RevealItem key={m.id} direction="up">
               <div className="bg-paper border-2 border-mist flex flex-col h-full hover:-translate-y-1 hover:shadow-lg transition-all duration-300">

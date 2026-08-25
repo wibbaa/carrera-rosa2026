@@ -14,7 +14,7 @@ export default function Step1PersonalInfo({ data, onNext }) {
   const [errors, setErrors] = useState({})
 
   const modality = form.modality
-  const requiresShirtSize = modality === 'carrera' || modality === 'ciclismo'
+  const requiresShirtSize = modality === 'carrera' || modality === 'ciclismo' || modality === 'caminata_playera'
   const autoCategory = modality === 'carrera' ? ageCategoryFor5k(form.birth_date) : null
 
   const set = (key) => (e) => setForm((f) => ({ ...f, [key]: e.target.value }))

@@ -26,7 +26,7 @@ export default function AdminLogin({ onLoggedIn }) {
       <form onSubmit={handleSubmit} className="w-full max-w-sm">
         <h1 className="font-display text-2xl uppercase mb-1">Panel admin</h1>
         <p className="text-ink-mute text-sm mb-8">
-          Gran Carrera Rosa Nogales — acceso restringido.
+          Gran Carrera Rosa Nogales. Acceso restringido.
         </p>
 
         <label className="block mb-4">

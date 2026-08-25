@@ -63,9 +63,18 @@ export const MODALITIES = [
     name: 'Caminata Familiar',
     distance: '2 KM',
     donativo: 150,
-    includes: 'Medalla de participación',
+    includes: '',
     route:
-      'Salida Plaza Miguel Hidalgo, vuelta a la izquierda Banamex Centro, Plutarco Elías Calles hacia el norte hasta Plaza de las Banderas, vuelta a la izquierda por calle Campillo, llegada Av. Obregón, vuelta a la izquierda hacia el sur — meta Plaza Miguel Hidalgo.',
+      'Salida Plaza Miguel Hidalgo, vuelta a la izquierda Banamex Centro, Plutarco Elías Calles hacia el norte hasta Plaza de las Banderas, vuelta a la izquierda por calle Campillo, llegada Av. Obregón, vuelta a la izquierda hacia el sur, meta Plaza Miguel Hidalgo.',
+  },
+  {
+    id: 'caminata_playera',
+    name: 'Caminata Familiar',
+    distance: '2 KM',
+    donativo: 300,
+    includes: 'Playera y medalla de participación',
+    route:
+      'Salida Plaza Miguel Hidalgo, vuelta a la izquierda Banamex Centro, Plutarco Elías Calles hacia el norte hasta Plaza de las Banderas, vuelta a la izquierda por calle Campillo, llegada Av. Obregón, vuelta a la izquierda hacia el sur, meta Plaza Miguel Hidalgo.',
   },
   {
     id: 'carrera',
@@ -74,7 +83,7 @@ export const MODALITIES = [
     donativo: 300,
     includes: 'Playera y medalla de participación',
     route:
-      'Salida Plaza Miguel Hidalgo por calle Obregón hacia el sur, vuelta a la izquierda en calle Jesús Ramírez (Hospital General), Plutarco Elías Calles hacia el norte hasta Plaza de las Banderas, vuelta a la izquierda por calle Campillo, llegada Av. Obregón, vuelta a la izquierda hacia el sur — meta Plaza Miguel Hidalgo.',
+      'Salida Plaza Miguel Hidalgo por calle Obregón hacia el sur, vuelta a la izquierda en calle Jesús Ramírez (Hospital General), Plutarco Elías Calles hacia el norte hasta Plaza de las Banderas, vuelta a la izquierda por calle Campillo, llegada Av. Obregón, vuelta a la izquierda hacia el sur, meta Plaza Miguel Hidalgo.',
   },
   {
     id: 'ciclismo',
@@ -83,13 +92,13 @@ export const MODALITIES = [
     donativo: 300,
     includes: 'Playera y medalla de participación',
     route:
-      'Salida Plaza Miguel Hidalgo por calle Obregón hacia el sur, vuelta a la derecha en Servicentro Llantero Nogales, Periférico Luis Donaldo Colosio hacia el norte, vuelta a la derecha hasta Reforma, vuelta a la derecha hasta Av. Obregón hacia el sur — meta Plaza Miguel Hidalgo.',
+      'Salida Plaza Miguel Hidalgo por calle Obregón hacia el sur, vuelta a la derecha en Servicentro Llantero Nogales, Periférico Luis Donaldo Colosio hacia el norte, vuelta a la derecha hasta Reforma, vuelta a la derecha hasta Av. Obregón hacia el sur, meta Plaza Miguel Hidalgo.',
   },
 ]
 
 export const KIDS_RACE = {
   name: 'Carreras infantiles',
-  description: 'En fomento a la actividad física — categorías de 100 y 200 metros.',
+  description: 'En fomento a la actividad física; categorías de 100 y 200 metros.',
 }
 
 export const CATEGORIES = {
@@ -100,22 +109,21 @@ export const CATEGORIES = {
       '40-44', '45-49', '50-54', '55-59', '60-69', '70 y más',
     ],
     special: 'Categoría especial Incluyente (femenil y varonil)',
-    prize: 'Los primeros 5 lugares de cada categoría reciben medalla conmemorativa oro, plata y bronce.',
+    prize: 'Los primeros 5 lugares de cada categoría reciben medalla conmemorativa de oro, plata y bronce.',
   },
   ciclismo: {
     title: 'Rodada de 15 KM',
     groups: ['Principiantes', 'Intermedio', 'Avanzados (femenil y varonil)'],
-    prize: 'Los primeros 5 lugares de cada categoría reciben medalla conmemorativa oro, plata y bronce.',
+    prize: 'Los primeros 5 lugares de cada categoría reciben medalla conmemorativa de oro, plata y bronce.',
   },
   absolutos: 'Premiación a los absolutos: 5K pedestre y 15K ciclismo (femenil y varonil).',
   kids: 'Premiación a niños: 100 y 200 metros.',
 }
 
-// TODO: llenar con datos reales antes de publicar — placeholders por ahora
 export const BANK_DETAILS = {
   bank: 'BBVA México',
   accountHolder: 'Agrupación George Papanicolaou de Nogales Sonora IAP',
   clabe: '012778001275763077',
 }
 
-export const WHATSAPP_NUMBER = 'TODO: 526311058180' // formato internacional sin +
+export const WHATSAPP_NUMBER = 'TODO: 526311058180'

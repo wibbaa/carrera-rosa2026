@@ -5,6 +5,7 @@ import { MotionConfig } from 'framer-motion'
 import './index.css'
 import Landing from './pages/Landing.jsx'
 import Registration from './pages/Registration.jsx'
+import Admin from './pages/Admin.jsx'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
@@ -14,6 +15,7 @@ createRoot(document.getElementById('root')).render(
         <Routes>
           <Route path="/" element={<Landing />} />
           <Route path="/registro" element={<Registration />} />
+          <Route path="/admin" element={<Admin />} />
         </Routes>
       </BrowserRouter>
     </MotionConfig>
