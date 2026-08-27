@@ -86,7 +86,7 @@ export default function Step1PersonalInfo({ data, onNext }) {
               className={`${inputClass} flex-1 min-w-0`}
               value={form.phone || ''}
               onChange={set('phone')}
-              placeholder="662 000 0000"
+              placeholder="631-000-000"
             />
           </div>
         </Field>
@@ -94,6 +94,7 @@ export default function Step1PersonalInfo({ data, onNext }) {
         <Field label="Fecha de nacimiento" error={errors.birth_date}>
           <input
             type="date"
+            lang="es-MX"
             className={inputClass}
             value={form.birth_date || ''}
             onChange={set('birth_date')}

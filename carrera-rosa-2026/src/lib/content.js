@@ -69,7 +69,7 @@ export const MODALITIES = [
   },
   {
     id: 'caminata_playera',
-    name: 'Caminata Familiar',
+    name: 'Caminata Familiar +',
     distance: '2 KM',
     donativo: 300,
     includes: 'Playera y medalla de participación',
@@ -109,12 +109,12 @@ export const CATEGORIES = {
       '40-44', '45-49', '50-54', '55-59', '60-69', '70 y más',
     ],
     special: 'Categoría especial Incluyente (femenil y varonil)',
-    prize: 'Los primeros 5 lugares de cada categoría reciben medalla conmemorativa de oro, plata y bronce.',
+    prize: 'Los primeros 5 lugares de cada categoría reciben medalla conmemorativa de oro, plata, bronce, cuarto y quinto lugar. Habrá chips de cronometraje para los corredores.',
   },
   ciclismo: {
     title: 'Rodada de 15 KM',
     groups: ['Principiantes', 'Intermedio', 'Avanzados (femenil y varonil)'],
-    prize: 'Los primeros 5 lugares de cada categoría reciben medalla conmemorativa de oro, plata y bronce.',
+    prize: 'Los primeros 5 lugares de cada categoría reciben medalla conmemorativa de oro, plata, bronce, cuarto y quinto lugar. Habrá chips de cronometraje para los ciclistas.',
   },
   absolutos: 'Premiación a los absolutos: 5K pedestre y 15K ciclismo (femenil y varonil).',
   kids: 'Premiación a niños: 100 y 200 metros.',
@@ -124,6 +124,15 @@ export const BANK_DETAILS = {
   bank: 'BBVA México',
   accountHolder: 'Agrupación George Papanicolaou de Nogales Sonora IAP',
   clabe: '012778001275763077',
+}
+
+export const HAIR_DONATION = {
+  title: 'Dona tu cabello',
+  description:
+    'Además de correr, caminar o rodar, también puedes apoyar donando tu cabello para pelucas de pacientes con cáncer. Si te gustaría donar, anótate por WhatsApp y te contactamos con toda la información.',
+  ctaLabel: 'Quiero donar mi cabello',
+  waMessage:
+    'Hola, me gustaría donar mi cabello para la Gran Carrera Rosa Nogales. ¿Me pueden dar más información?',
 }
 
 export const WHATSAPP_NUMBER = 'TODO: 526311058180'
