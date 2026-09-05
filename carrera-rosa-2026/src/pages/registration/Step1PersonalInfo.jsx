@@ -112,7 +112,7 @@ export default function Step1PersonalInfo({ data, onNext }) {
             <option value="">Selecciona</option>
             {MODALITIES.map((m) => (
               <option key={m.id} value={m.id}>
-                {m.name} — {m.distance} (${m.donativo})
+                {m.name} — {m.distance} (${m.donativo}) {m.includes}
               </option>
             ))}
           </select>
