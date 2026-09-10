@@ -1,8 +1,8 @@
 -- ============================================================================
--- 3ra Gran Carrera Rosa Nogales 2026 — esquema de Supabase
--- Corre esto completo en el SQL editor de tu proyecto de Supabase.
--- Mismo patrón que ya usaste en el 4K con Causa: folio atómico vía RPC,
--- bucket privado para comprobantes, verificación manual por WhatsApp.
+-- 3ra Gran Carrera Rosa Nogales 2026 — esquema completo de Supabase
+-- Corre esto completo en el SQL editor de tu proyecto (Supabase → SQL Editor).
+-- Es seguro volver a correrlo si ya tenías una versión anterior instalada:
+-- usa "if not exists" / "or replace" / "drop policy if exists" en todos lados.
 -- ============================================================================
 
 -- 1) Secuencia para el folio (formato CRN26-00001)
@@ -19,7 +19,7 @@ create table if not exists public.registrations (
   phone text not null,
   birth_date date not null,
   gender text not null check (gender in ('femenil', 'varonil')),
-  modality text not null check (modality in ('caminata', 'carrera', 'ciclismo')),
+  modality text not null check (modality in ('caminata', 'caminata_playera', 'carrera', 'ciclismo')),
   category text not null,
   shirt_size text,
   amount numeric not null,
@@ -27,12 +27,29 @@ create table if not exists public.registrations (
   payment_status text not null default 'pendiente'
     check (payment_status in ('pendiente', 'verificado', 'rechazado')),
   whatsapp_verified boolean not null default false,
+  -- se llenan solos vía trigger / script de limpieza — no los toca el cliente
+  confirmed_at timestamptz,
+  proof_deleted_at timestamptz,
   created_at timestamptz not null default now()
 );
+
+-- por si vienes de una versión anterior del schema, agrega las columnas nuevas sin tronar nada
+alter table public.registrations add column if not exists confirmed_at timestamptz;
+alter table public.registrations add column if not exists proof_deleted_at timestamptz;
+
+-- idem para el check de modalidades: "create table if not exists" no toca una tabla que
+-- ya existe, así que si tu tabla ya estaba creada sin 'caminata_playera' hay que
+-- actualizar el constraint a mano aquí.
+alter table public.registrations drop constraint if exists registrations_modality_check;
+alter table public.registrations add constraint registrations_modality_check
+  check (modality in ('caminata', 'caminata_playera', 'carrera', 'ciclismo'));
 
 create index if not exists registrations_folio_idx on public.registrations (folio);
 create index if not exists registrations_modality_idx on public.registrations (modality);
 create index if not exists registrations_payment_status_idx on public.registrations (payment_status);
+create index if not exists registrations_cleanup_idx
+  on public.registrations (payment_status, confirmed_at)
+  where payment_proof_path is not null;
 
 -- 3) RPC atómica: genera folio + inserta en una sola transacción
 --    (evita condiciones de carrera si dos personas se registran al mismo tiempo)
@@ -71,7 +88,6 @@ begin
 end;
 $$;
 
--- Solo el rol anónimo/autenticado puede llamar la función (no acceso directo a la tabla para insertar)
 grant execute on function public.create_registration(jsonb) to anon, authenticated;
 
 -- 4) RPC para adjuntar la ruta del comprobante una vez subido a Storage
@@ -90,37 +106,113 @@ $$;
 
 grant execute on function public.attach_payment_proof(text, text) to anon, authenticated;
 
--- 5) Row Level Security — nadie lee/escribe la tabla directo, todo pasa por las RPC de arriba
+-- 4.1) RPC para cancelar una inscripción que quedó a medias (p. ej. si falló la
+--      subida del comprobante después de crear el folio).
+create or replace function public.cancel_registration(p_folio text)
+returns void
+language plpgsql
+security definer
+set search_path = public
+as $$
+begin
+  delete from public.registrations
+  where folio = p_folio
+    and payment_proof_path is null; -- nunca borra una inscripción que ya tenga comprobante adjunto
+end;
+$$;
+
+grant execute on function public.cancel_registration(text) to anon, authenticated;
+
+-- 4.2) RPC pública para el contador en vivo de la landing. Solo regresa un
+--      número (nada de nombres/teléfonos), así que es seguro exponerla a
+--      cualquiera aunque el resto de la tabla esté bloqueada por RLS.
+--      No cuenta los 'rechazado' porque esos liberan su kit de vuelta.
+create or replace function public.get_registration_count()
+returns integer
+language sql
+security definer
+set search_path = public
+stable
+as $$
+  select count(*)::integer
+  from public.registrations
+  where payment_status <> 'rechazado';
+$$;
+
+grant execute on function public.get_registration_count() to anon, authenticated;
+
+-- 5) Trigger: cuando un admin marca "verificado", sella la fecha automáticamente.
+create or replace function public.set_confirmed_at()
+returns trigger
+language plpgsql
+as $$
+begin
+  if new.payment_status = 'verificado' and (old.payment_status is distinct from 'verificado') then
+    new.confirmed_at := now();
+  elsif new.payment_status <> 'verificado' then
+    new.confirmed_at := null;
+  end if;
+  return new;
+end;
+$$;
+
+drop trigger if exists trg_set_confirmed_at on public.registrations;
+create trigger trg_set_confirmed_at
+before update on public.registrations
+for each row execute function public.set_confirmed_at();
+
+-- 6) Row Level Security
 alter table public.registrations enable row level security;
 
--- Permite que una persona consulte SU PROPIO folio (para la pantalla de confirmación)
--- usando el folio exacto como "llave" — no hay listado público de inscritos.
-create policy "select_by_exact_folio"
-  on public.registrations for select
-  using (true); -- el filtro por folio se hace en la query (.eq('folio', folio)); no hay policy de listado abierto porque el cliente siempre debe pasar el folio exacto
+-- Limpia cualquier policy vieja e insegura de versiones anteriores de este archivo
+-- (esta dejaba leer TODA la tabla con la anon key pública).
+drop policy if exists "select_by_exact_folio" on public.registrations;
 
--- No se permite insert/update/delete directo desde el cliente — solo vía las funciones security definer de arriba
--- (no se crean policies de insert/update/delete a propósito)
+-- El cliente público (anon) NUNCA lee la tabla directo — solo inserta vía las RPC
+-- de arriba, y solo cuenta filas vía get_registration_count(). No hay policy de
+-- select/update/delete para anon a propósito: si no hay policy, no hay acceso.
+
+-- Solo usuarios autenticados (el/los admin que crees a mano en Supabase Auth)
+-- pueden leer y actualizar inscripciones — esto es lo que usa el panel /admin.
+drop policy if exists "admin_select_all" on public.registrations;
+create policy "admin_select_all"
+  on public.registrations for select
+  to authenticated
+  using (true);
+
+drop policy if exists "admin_update_status" on public.registrations;
+create policy "admin_update_status"
+  on public.registrations for update
+  to authenticated
+  using (true)
+  with check (true);
 
 -- ============================================================================
--- 6) Storage: bucket privado para comprobantes de pago
+-- 7) Storage: bucket privado para comprobantes de pago
 -- ============================================================================
 insert into storage.buckets (id, name, public)
 values ('comprobantes-pago', 'comprobantes-pago', false)
 on conflict (id) do nothing;
 
--- Cualquiera puede SUBIR un comprobante (insert), pero nadie puede leer el bucket
--- directo desde el cliente — la verificación la hace un admin desde el dashboard
--- de Supabase o un panel aparte con la service_role key.
+drop policy if exists "anyone_can_upload_proof" on storage.objects;
 create policy "anyone_can_upload_proof"
   on storage.objects for insert
+  to public
   with check (bucket_id = 'comprobantes-pago');
 
+drop policy if exists "admin_view_proofs" on storage.objects;
+create policy "admin_view_proofs"
+  on storage.objects for select
+  to authenticated
+  using (bucket_id = 'comprobantes-pago');
+
+drop policy if exists "admin_delete_proofs" on storage.objects;
+create policy "admin_delete_proofs"
+  on storage.objects for delete
+  to authenticated
+  using (bucket_id = 'comprobantes-pago');
+
 -- ============================================================================
--- Notas:
--- - Verificación de pago: por ahora es manual (WhatsApp + revisar el comprobante
---   en el Storage dashboard, marcar payment_status = 'verificado' a mano o desde
---   un panel admin). Si luego quieres automatizarlo, podemos armar un panel simple.
--- - Recuerda actualizar WHATSAPP_NUMBER y BANK_DETAILS en src/lib/content.js
---   antes de publicar.
+-- 8) Crear tu usuario admin (hazlo UNA vez, a mano, no por SQL):
+--    Supabase Dashboard → Authentication → Users → Add user
 -- ============================================================================

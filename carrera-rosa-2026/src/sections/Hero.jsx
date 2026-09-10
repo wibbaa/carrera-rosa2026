@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion'
 import { EVENT } from '../lib/content'
 import bannerPhoto from '../assets/photos/banner-hero.jpg'
+import Countdown from '../components/Countdown'
 
 export default function Hero() {
   return (
@@ -65,6 +66,17 @@ export default function Hero() {
           <span>📍 {EVENT.venue}</span>
           <span>🕖 {EVENT.time}</span>
           <span>📅 {EVENT.date}</span>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.72, ease: [0.22, 1, 0.36, 1] }}
+        >
+          <p className="font-mono text-[10px] uppercase tracking-widest text-paper/50 mt-6 mb-2">
+            Faltan
+          </p>
+          <Countdown targetISO={EVENT.dateTimeISO} />
         </motion.div>
 
         <motion.div

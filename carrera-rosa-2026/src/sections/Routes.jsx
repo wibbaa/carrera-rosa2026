@@ -13,10 +13,10 @@ export default function Routes() {
           </h2>
         </Reveal>
 
-        <RevealGroup className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6" stagger={0.12}>
+        <RevealGroup className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 justify-items-center max-w-5xl mx-auto" stagger={0.12}>
           {MODALITIES.map((m) => (
-            <RevealItem key={m.id} direction="up">
-              <div className="bg-paper border-2 border-mist flex flex-col h-full hover:-translate-y-1 hover:shadow-lg transition-all duration-300">
+            <RevealItem key={m.id} direction="up" className="w-full">
+              <div className="bg-paper border-2 border-mist flex flex-col h-full w-full hover:-translate-y-1 hover:shadow-lg transition-all duration-300">
                 <div className="p-6 border-b-2 border-mist flex items-baseline justify-between">
                   <h3 className="font-display text-2xl uppercase">{m.name}</h3>
                   <span className="font-mono text-rose-deep font-bold">{m.distance}</span>

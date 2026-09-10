@@ -10,6 +10,9 @@ export const EVENT = {
   // TODO: confirmar fecha y hora exactas de la 3ra edición
   date: '11 de Octubre',
   time: '7:00 AM',
+  // Sonora no cambia de horario (sin horario de verano) → UTC-7 fijo todo el año.
+  // Si la fecha de arriba cambia, actualiza esta también — de aquí lee la cuenta regresiva.
+  dateTimeISO: '2026-10-11T07:00:00-07:00',
   venue: 'Plaza Miguel Hidalgo, Nogales, Sonora',
 }
 
@@ -59,17 +62,8 @@ export const PAST_EDITIONS = [
 
 export const MODALITIES = [
   {
-    id: 'caminata',
-    name: 'Caminata Familiar',
-    distance: '2 KM',
-    donativo: 150,
-    includes: '',
-    route:
-      'Salida Plaza Miguel Hidalgo, vuelta a la izquierda Banamex Centro, Plutarco Elías Calles hacia el norte hasta Plaza de las Banderas, vuelta a la izquierda por calle Campillo, llegada Av. Obregón, vuelta a la izquierda hacia el sur, meta Plaza Miguel Hidalgo.',
-  },
-  {
     id: 'caminata_playera',
-    name: 'Caminata Familiar +',
+    name: 'Caminata Familiar',
     distance: '2 KM',
     donativo: 300,
     includes: 'Playera y medalla de participación',
@@ -83,7 +77,7 @@ export const MODALITIES = [
     donativo: 300,
     includes: 'Playera y medalla de participación',
     route:
-      'Salida Plaza Miguel Hidalgo por calle Obregón hacia el sur, vuelta a la izquierda en calle Jesús Ramírez (Hospital General), Plutarco Elías Calles hacia el norte hasta Plaza de las Banderas, vuelta a la izquierda por calle Campillo, llegada Av. Obregón, vuelta a la izquierda hacia el sur, meta Plaza Miguel Hidalgo.',
+      'Salida Plaza Miguel Hidalgo sobre la Ave. Álvaro Obregón hacia el sur, vuelta a la izquierda en Florería Alcatraz Calle Manuel Pelayo, tomando Plutarco Elías Calles hacia el norte hasta llegar a Gasolinería Calle Vásquez, vuelta a la izquierda y tomar la Av. López Mateos hacia el sur para llegar a la meta Plaza Miguel Hidalgo.',
   },
   {
     id: 'ciclismo',
@@ -124,6 +118,17 @@ export const BANK_DETAILS = {
   bank: 'BBVA México',
   accountHolder: 'Agrupación George Papanicolaou de Nogales Sonora IAP',
   clabe: '012778001275763077',
+}
+
+export const KITS_INFO = {
+  total: 1200,
+  fallbackAmount: 150,
+  title: '¡Todos podemos ser parte de esta causa!',
+  paragraphs: [
+    'Una vez alcanzados los 1,200 kits disponibles, podrás seguir inscribiéndote y participar en la carrera con una aportación de $150 pesos.',
+    'Tu inscripción será destinada a apoyar los recursos de nuestra causa. Estas inscripciones ya no incluirán camiseta ni medalla, pero tu participación y apoyo cuentan igual.',
+    '¡Súmate, corre con nosotros y ayúdanos a hacer la diferencia!',
+  ],
 }
 
 export const HAIR_DONATION = {
