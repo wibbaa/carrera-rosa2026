@@ -53,9 +53,16 @@ Con eso ya puedes entrar a `tu-sitio.com/admin`, poner ese correo y contraseña,
 
 Login con el usuario que creaste en el paso 3. Desde ahí puedes:
 - Ver inscripciones por pestaña: Pendientes / Verificados / Rechazados / Todos
-- Buscar por folio o nombre
+- Buscar por folio, nombre o equipo
 - Abrir el comprobante de pago (link firmado, expira en 2 minutos, no queda público)
 - Marcar como **Verificado** o **Rechazado**
+
+## Registro por equipo (opcional)
+
+En "Tus datos" del wizard hay un campo **"Equipo (opcional)"** — se puede dejar vacío sin
+problema, no es obligatorio ni bloquea el registro. Se guarda en la columna `team_name` de
+`registrations` (nula si no se llenó) y aparece en el panel admin, tanto en su propia columna
+como en el buscador.
 
 ## Contador de kits en vivo
 

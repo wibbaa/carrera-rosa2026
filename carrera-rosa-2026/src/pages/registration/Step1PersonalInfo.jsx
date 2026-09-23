@@ -91,6 +91,15 @@ export default function Step1PersonalInfo({ data, onNext }) {
           </div>
         </Field>
 
+        <Field label="Equipo (opcional)">
+          <input
+            className={inputClass}
+            value={form.team_name || ''}
+            onChange={set('team_name')}
+            placeholder="Ej. Los Locos del Asfalto"
+          />
+        </Field>
+
         <Field label="Fecha de nacimiento" error={errors.birth_date}>
           <input
             type="date"

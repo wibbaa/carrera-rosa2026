@@ -42,6 +42,7 @@ export default function Step2Payment({ data, onBack, onDone }) {
             modality: data.modality,
             category: data.category,
             shirt_size: data.shirt_size ?? null,
+            team_name: data.team_name ?? null,
             amount: data.amount,
           },
         }

@@ -59,7 +59,11 @@ export default function AdminDashboard({ userEmail, onLogout }) {
   const filteredRows = rows.filter((r) => {
     if (!search.trim()) return true
     const q = search.toLowerCase()
-    return r.folio.toLowerCase().includes(q) || r.full_name.toLowerCase().includes(q)
+    return (
+      r.folio.toLowerCase().includes(q) ||
+      r.full_name.toLowerCase().includes(q) ||
+      (r.team_name ?? '').toLowerCase().includes(q)
+    )
   })
 
   return (
@@ -98,7 +102,7 @@ export default function AdminDashboard({ userEmail, onLogout }) {
           </div>
           <input
             type="text"
-            placeholder="Buscar por folio o nombre…"
+            placeholder="Buscar por folio, nombre o equipo…"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             className="border-2 border-mist focus:border-rose outline-none px-4 py-2 bg-paper text-sm w-64"
@@ -117,6 +121,7 @@ export default function AdminDashboard({ userEmail, onLogout }) {
                 <tr>
                   <th className="text-left px-4 py-3">Folio</th>
                   <th className="text-left px-4 py-3">Nombre</th>
+                  <th className="text-left px-4 py-3">Equipo</th>
                   <th className="text-left px-4 py-3">Teléfono</th>
                   <th className="text-left px-4 py-3">Modalidad</th>
                   <th className="text-left px-4 py-3">Categoría</th>
@@ -133,6 +138,7 @@ export default function AdminDashboard({ userEmail, onLogout }) {
                       {r.folio}
                     </td>
                     <td className="px-4 py-3">{r.full_name}</td>
+                    <td className="px-4 py-3 text-ink-mute">{r.team_name || '—'}</td>
                     <td className="px-4 py-3 font-mono">{r.phone}</td>
                     <td className="px-4 py-3">{modalityName(r.modality)}</td>
                     <td className="px-4 py-3">{r.category}</td>

@@ -22,6 +22,7 @@ create table if not exists public.registrations (
   modality text not null check (modality in ('caminata', 'caminata_playera', 'carrera', 'ciclismo')),
   category text not null,
   shirt_size text,
+  team_name text,
   amount numeric not null,
   payment_proof_path text,
   payment_status text not null default 'pendiente'
@@ -36,6 +37,7 @@ create table if not exists public.registrations (
 -- por si vienes de una versión anterior del schema, agrega las columnas nuevas sin tronar nada
 alter table public.registrations add column if not exists confirmed_at timestamptz;
 alter table public.registrations add column if not exists proof_deleted_at timestamptz;
+alter table public.registrations add column if not exists team_name text; -- opcional, puede quedar vacío
 
 -- idem para el check de modalidades: "create table if not exists" no toca una tabla que
 -- ya existe, así que si tu tabla ya estaba creada sin 'caminata_playera' hay que
@@ -50,6 +52,9 @@ create index if not exists registrations_payment_status_idx on public.registrati
 create index if not exists registrations_cleanup_idx
   on public.registrations (payment_status, confirmed_at)
   where payment_proof_path is not null;
+create index if not exists registrations_team_name_idx
+  on public.registrations (team_name)
+  where team_name is not null;
 
 -- 3) RPC atómica: genera folio + inserta en una sola transacción
 --    (evita condiciones de carrera si dos personas se registran al mismo tiempo)
@@ -69,7 +74,7 @@ begin
 
   insert into public.registrations (
     folio, full_name, phone, birth_date, gender,
-    modality, category, shirt_size,
+    modality, category, shirt_size, team_name,
     amount
   ) values (
     new_folio,
@@ -80,6 +85,7 @@ begin
     payload->>'modality',
     payload->>'category',
     payload->>'shirt_size',
+    nullif(trim(payload->>'team_name'), ''), -- opcional: cadena vacía o ausente se guarda como null
     (payload->>'amount')::numeric
   )
   returning registrations.id into new_id;
