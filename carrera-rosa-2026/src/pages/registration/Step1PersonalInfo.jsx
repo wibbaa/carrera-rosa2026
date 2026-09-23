@@ -96,7 +96,7 @@ export default function Step1PersonalInfo({ data, onNext }) {
             className={inputClass}
             value={form.team_name || ''}
             onChange={set('team_name')}
-            placeholder="Ej. Los Locos del Asfalto"
+            placeholder="Ej. Altruistamente Locos"
           />
         </Field>
 
