@@ -56,6 +56,12 @@ Login con el usuario que creaste en el paso 3. Desde ahí puedes:
 - Buscar por folio, nombre o equipo
 - Abrir el comprobante de pago (link firmado, expira en 2 minutos, no queda público)
 - Marcar como **Verificado** o **Rechazado**
+- **Editar** cualquier dato del participante (nombre, teléfono, fecha de nacimiento, género,
+  modalidad, categoría, talla, equipo, monto) — útil, por ejemplo, para ajustar el monto a mano
+  cuando se agoten los 1,200 kits y alguien se registre con la tarifa de $150 sin playera/medalla
+- Botón de **WhatsApp** por participante — abre `wa.me` directo al número que la persona
+  capturó al registrarse (el mismo campo `phone`, con LADA incluida, que usa la confirmación
+  del registro), con un mensaje inicial ya escrito
 
 ## Registro por equipo (opcional)
 
@@ -136,6 +142,7 @@ src/
     admin/
       AdminLogin.jsx
       AdminDashboard.jsx
+      EditRegistrationModal.jsx
 supabase/
   schema.sql                      <- correr en el SQL editor de Supabase
 ```

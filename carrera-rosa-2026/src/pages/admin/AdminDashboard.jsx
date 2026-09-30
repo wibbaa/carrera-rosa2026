@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
 import { supabase } from '../../lib/supabase'
 import { MODALITIES } from '../../lib/content'
+import EditRegistrationModal from './EditRegistrationModal'
 
 const TABS = [
   { id: 'pendiente', label: 'Pendientes' },
@@ -11,6 +12,15 @@ const TABS = [
 
 const modalityName = (id) => MODALITIES.find((m) => m.id === id)?.name ?? id
 
+// Mismo formato que usa Step3Confirmation.jsx para el wa.me del organizador,
+// pero aquí apuntando al número del PARTICIPANTE — el que él mismo capturó al
+// registrarse (con LADA incluida), no el del organizador.
+function waLinkForParticipant(r) {
+  const digits = (r.phone ?? '').replace(/\D/g, '')
+  const message = `¡Hola ${r.full_name}! Te contactamos por tu inscripción a la Gran Carrera Rosa Nogales, folio ${r.folio}.`
+  return `https://wa.me/${digits}?text=${encodeURIComponent(message)}`
+}
+
 export default function AdminDashboard({ userEmail, onLogout }) {
   const [tab, setTab] = useState('pendiente')
   const [rows, setRows] = useState([])
@@ -18,6 +28,7 @@ export default function AdminDashboard({ userEmail, onLogout }) {
   const [error, setError] = useState('')
   const [busyFolio, setBusyFolio] = useState(null)
   const [search, setSearch] = useState('')
+  const [editing, setEditing] = useState(null)
 
   const load = useCallback(async () => {
     setLoading(true)
@@ -161,7 +172,7 @@ export default function AdminDashboard({ userEmail, onLogout }) {
                       <StatusBadge status={r.payment_status} />
                     </td>
                     <td className="px-4 py-3">
-                      <div className="flex gap-2">
+                      <div className="flex flex-wrap gap-2">
                         {r.payment_status !== 'verificado' && (
                           <button
                             disabled={busyFolio === r.folio}
@@ -180,6 +191,20 @@ export default function AdminDashboard({ userEmail, onLogout }) {
                             Rechazar
                           </button>
                         )}
+                        <a
+                          href={waLinkForParticipant(r)}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="font-mono text-[11px] uppercase bg-[#25D366] hover:opacity-90 text-white px-2.5 py-1.5 transition-opacity"
+                        >
+                          WhatsApp
+                        </a>
+                        <button
+                          onClick={() => setEditing(r)}
+                          className="font-mono text-[11px] uppercase border border-mist hover:border-ink px-2.5 py-1.5 transition-colors"
+                        >
+                          Editar
+                        </button>
                       </div>
                     </td>
                   </tr>
@@ -194,6 +219,17 @@ export default function AdminDashboard({ userEmail, onLogout }) {
           de marcarse como verificadas para ahorrar espacio.
         </p>
       </div>
+
+      {editing && (
+        <EditRegistrationModal
+          registration={editing}
+          onClose={() => setEditing(null)}
+          onSaved={() => {
+            setEditing(null)
+            load()
+          }}
+        />
+      )}
     </div>
   )
 }
