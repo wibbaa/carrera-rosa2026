@@ -68,7 +68,7 @@ export const MODALITIES = [
     donativo: 300,
     includes: 'Playera y medalla de participación',
     route:
-      'Salida Plaza Miguel Hidalgo, vuelta a la izquierda Banamex Centro, Plutarco Elías Calles hacia el norte hasta Plaza de las Banderas, vuelta a la izquierda por calle Campillo, llegada Av. Obregón, vuelta a la izquierda hacia el sur, meta Plaza Miguel Hidalgo.',
+      'Salida Plaza Miguel Hidalgo sobre Av. Alvaro Obregon hacia el sur, Vuelta a la Izquierda en Cuidado con el Perro hacia Av. Plutarco Elias Calles hacia el norte hasta llegar a Gasolinera Calle Vazquez, vuelta a la izquierda y tomar Av. Adolfo Lopez Mateos hacia el sur para llegar a la Meta Plaza Miguel Hidalgo.',
   },
   {
     id: 'carrera',
