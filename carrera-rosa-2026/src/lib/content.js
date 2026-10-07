@@ -69,6 +69,9 @@ export const MODALITIES = [
     includes: 'Playera y medalla de participación',
     route:
       'Salida Plaza Miguel Hidalgo Ave. Álvaro Obregón hacia el sur, Vuelta a la Izquierda a la altura de la Taquería Lupitas o Cuidado con el Perro, tomaremos la Ave. Plutarco Elías Calles Hacia el Norte, llegando al Retorno Bancomer Vuelta a la Izquierda y nos vamos hacia el Sur sobre la calle Ave López Mateos y finalmente llegamos a la Meta Placita Miguel Hidalgo.',
+  },
+  {
+    id: 'carrera',
     name: 'Carrera',
     distance: '5 KM',
     donativo: 300,
