@@ -10,7 +10,7 @@ const COUNTRY_CODES = [
 ]
 
 export default function Step1PersonalInfo({ data, onNext }) {
-  const [form, setForm] = useState({ phone_country: '+52', ...data })
+  const [form, setForm] = useState({ phone_country: '+52', disability: false, disability_details: '', ...data })
   const [errors, setErrors] = useState({})
 
   const modality = form.modality
@@ -18,6 +18,7 @@ export default function Step1PersonalInfo({ data, onNext }) {
   const autoCategory = modality === 'carrera' ? ageCategoryFor5k(form.birth_date) : null
 
   const set = (key) => (e) => setForm((f) => ({ ...f, [key]: e.target.value }))
+  const toggle = (key) => (e) => setForm((f) => ({ ...f, [key]: e.target.checked }))
 
   const modalityAmount = useMemo(
     () => MODALITIES.find((m) => m.id === modality)?.donativo ?? 0,
@@ -99,6 +100,31 @@ export default function Step1PersonalInfo({ data, onNext }) {
             placeholder="Ej. Altruistamente Locos"
           />
         </Field>
+
+        <Field label="¿Tienes alguna discapacidad?">
+          <label className="flex items-center gap-3">
+            <input
+              type="checkbox"
+              className="h-4 w-4"
+              checked={!!form.disability}
+              onChange={toggle('disability')}
+              aria-label="Persona con discapacidad"
+            />
+            <span className="font-medium">Soy persona con discapacidad</span>
+            <span className="text-ink-mute">♿</span>
+          </label>
+        </Field>
+
+        {form.disability && (
+          <Field label="Detalles (opcional)">
+            <input
+              className={inputClass}
+              value={form.disability_details || ''}
+              onChange={set('disability_details')}
+              placeholder="Ej. movilidad reducida, necesidades, acompañante"
+            />
+          </Field>
+        )}
 
         <Field label="Fecha de nacimiento" error={errors.birth_date}>
           <input

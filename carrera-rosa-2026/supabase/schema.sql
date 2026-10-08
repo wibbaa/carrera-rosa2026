@@ -38,6 +38,8 @@ create table if not exists public.registrations (
 alter table public.registrations add column if not exists confirmed_at timestamptz;
 alter table public.registrations add column if not exists proof_deleted_at timestamptz;
 alter table public.registrations add column if not exists team_name text; -- opcional, puede quedar vacío
+alter table public.registrations add column if not exists disability boolean not null default false;
+alter table public.registrations add column if not exists disability_details text;
 
 -- idem para el check de modalidades: "create table if not exists" no toca una tabla que
 -- ya existe, así que si tu tabla ya estaba creada sin 'caminata_playera' hay que
@@ -75,6 +77,7 @@ begin
   insert into public.registrations (
     folio, full_name, phone, birth_date, gender,
     modality, category, shirt_size, team_name,
+    disability, disability_details,
     amount
   ) values (
     new_folio,
@@ -86,6 +89,8 @@ begin
     payload->>'category',
     payload->>'shirt_size',
     nullif(trim(payload->>'team_name'), ''), -- opcional: cadena vacía o ausente se guarda como null
+    coalesce((payload->>'disability')::boolean, false),
+    nullif(trim(payload->>'disability_details'), ''),
     (payload->>'amount')::numeric
   )
   returning registrations.id into new_id;
