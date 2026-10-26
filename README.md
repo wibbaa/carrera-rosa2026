@@ -6,4 +6,4 @@ Desarrollada enteramente en el framework de React + Vite, con panel de administr
 
 https://carrera-rosa2026.vercel.app/
 
-
+<img width="1919" height="1079" alt="image" src="https://github.com/user-attachments/assets/d2d80976-76fc-4d84-a452-55c911f07cbe" />
